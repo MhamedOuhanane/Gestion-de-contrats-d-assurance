@@ -1,4 +1,4 @@
 package java.service.interfaces;
 
-public class ClientService {
+public interface ClientService {
 }

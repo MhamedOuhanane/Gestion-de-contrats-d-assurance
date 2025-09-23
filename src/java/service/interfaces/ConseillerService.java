@@ -1,4 +1,4 @@
 package java.service.interfaces;
 
-public class ConseillerService {
+public interface ConseillerService {
 }

@@ -1,4 +1,4 @@
 package java.repository.interfaces;
 
-public class ContratRepository {
+public interface ContratRepository {
 }
