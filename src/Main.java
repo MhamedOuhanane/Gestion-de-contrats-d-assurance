@@ -1,4 +1,4 @@
-import config.DatabaseConfig;
+import java.config.DatabaseConfig;
 
 import java.sql.Connection;
 
