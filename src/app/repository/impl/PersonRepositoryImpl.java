@@ -22,7 +22,7 @@ public class PersonRepositoryImpl implements PersonRepository {
             if (rowsInserted > 0) {
                 try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
                     if (generatedKeys.next()) {
-                        person.setId(generatedKeys.getInt("id"));
+                        person.setId(generatedKeys.getInt(1));
                     }
                 }
             }

@@ -4,22 +4,28 @@ import app.config.DatabaseConfig;
 import app.model.Client;
 import app.model.Person;
 import app.repository.interfaces.ClientRepository;
+import app.repository.interfaces.PersonRepository;
+
 import java.sql.*;
 import java.util.HashMap;
 
-public class ClientRepositoryImpl extends PersonRepositoryImpl implements ClientRepository {
+public class ClientRepositoryImpl implements ClientRepository {
+    private PersonRepository personRepository;
     private static final Connection conn = DatabaseConfig.getInstance().getConnection();
 
     @Override
     public Client createClient(Client client) {
-        String insertQuery = "INSERT INTO client (nom, prenom, email, conseiller_id) VALUES (?, ?, ?, ?)";
+        String insertQuery = "INSERT INTO client (id, nom, prenom, email, conseiller_id) VALUES (?, ?, ?, ?, ?)";
         try {
+            Person person = (Person) client;
+            person = this.personRepository.createPerson(client);
             PreparedStatement stmt = conn.prepareStatement(insertQuery, Statement.RETURN_GENERATED_KEYS);
 
-            stmt.setString(1, client.getNom());
-            stmt.setString(2, client.getPrenom());
-            stmt.setString(3, client.getEmail());
-            stmt.setInt(4, client.getConseiller_id());
+            stmt.setInt(1, person.getId());
+            stmt.setString(2, client.getNom());
+            stmt.setString(3, client.getPrenom());
+            stmt.setString(4, client.getEmail());
+            stmt.setInt(5, client.getConseiller_id());
 
             int rowsInserted = stmt.executeUpdate();
             if (rowsInserted > 0) {
