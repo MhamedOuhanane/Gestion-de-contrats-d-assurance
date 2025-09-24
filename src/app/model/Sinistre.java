@@ -1,16 +1,16 @@
 package app.model;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class Sinistre {
     private Integer id;
     private EnumSinistre typeSinistre;
-    private LocalDate date;
+    private LocalDateTime date;
     private Double montant;
     private String description;
     private Integer contrat_id;
 
-    public Sinistre(Integer id, EnumSinistre typeSinistre, LocalDate date, Double montant, String description, Integer contrat_id) {
+    public Sinistre(Integer id, EnumSinistre typeSinistre, LocalDateTime date, Double montant, String description, Integer contrat_id) {
         this.id = id;
         this.typeSinistre = typeSinistre;
         this.date = date;
@@ -27,7 +27,7 @@ public class Sinistre {
         this.typeSinistre = typeSinistre;
     }
 
-    public void setDate(LocalDate date) {
+    public void setDate(LocalDateTime date) {
         this.date = date;
     }
 
@@ -51,7 +51,7 @@ public class Sinistre {
         return typeSinistre;
     }
 
-    public LocalDate getDate() {
+    public LocalDateTime getDate() {
         return date;
     }
 

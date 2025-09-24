@@ -14,7 +14,7 @@ public class ContratRepositoryImpl implements ContratRepository {
 
     @Override
     public Contrat insertContrat(Contrat contrat) {
-        String insertQuery = "INSERT INTO contrat (typeContrat, dateDebut, dateFin, client_id)";
+        String insertQuery = "INSERT INTO contrat (typeContrat, dateDebut, dateFin, client_id) VALUES (?, ?, ?, ?)";
 
         try (PreparedStatement stmt = conn.prepareStatement(insertQuery, Statement.RETURN_GENERATED_KEYS)){
             stmt.setString(1, contrat.getTypeContrat().getDescription());
