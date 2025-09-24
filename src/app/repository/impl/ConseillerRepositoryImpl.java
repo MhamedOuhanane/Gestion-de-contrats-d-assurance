@@ -12,6 +12,11 @@ public class ConseillerRepositoryImpl implements ConseillerRepository {
     }
 
     @Override
+    public Conseiller findConseiller(Integer conseiller_id) {
+        return null;
+    }
+
+    @Override
     public List<Conseiller> getAllConseiller() {
         return Collections.emptyList();
     }

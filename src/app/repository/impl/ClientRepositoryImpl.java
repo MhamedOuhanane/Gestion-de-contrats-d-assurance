@@ -2,17 +2,19 @@ package app.repository.impl;
 
 import app.config.DatabaseConfig;
 import app.model.Client;
+import app.model.Person;
 import app.repository.interfaces.ClientRepository;
 import java.sql.*;
 import java.util.HashMap;
 
-public class ClientRepositoryImpl implements ClientRepository {
+public class ClientRepositoryImpl extends PersonRepositoryImpl implements ClientRepository {
     private static final Connection conn = DatabaseConfig.getInstance().getConnection();
 
     @Override
     public Client createClient(Client client) {
         String insertQuery = "INSERT INTO client (nom, prenom, email, conseiller_id) VALUES (?, ?, ?, ?)";
-        try (PreparedStatement stmt = conn.prepareStatement(insertQuery, Statement.RETURN_GENERATED_KEYS)) {
+        try {
+            PreparedStatement stmt = conn.prepareStatement(insertQuery, Statement.RETURN_GENERATED_KEYS);
 
             stmt.setString(1, client.getNom());
             stmt.setString(2, client.getPrenom());
@@ -30,6 +32,28 @@ public class ClientRepositoryImpl implements ClientRepository {
             return client;
         } catch (SQLException e) {
             System.out.println("Erreur lors de l'insert de client: " + e.getMessage());
+            return null;
+        }
+    }
+
+    @Override
+    public Client findClient(Integer client_id) {
+        String selectQuery = "SELECT * FROM client WHERE id = ?";
+        try (PreparedStatement stmt = conn.prepareStatement(selectQuery)) {
+            stmt.setInt(1, client_id);
+            ResultSet resultSet = stmt.executeQuery();
+            if (resultSet.next()) {
+                Integer id = resultSet.getInt("id");
+                String nom = resultSet.getString("nom");
+                String prenom = resultSet.getString("prenom");
+                String email = resultSet.getString("email");
+                Integer conseiller_id = resultSet.getInt("conseiller_id");
+
+                return new Client(id, nom, prenom, email, conseiller_id);
+            }
+            return null;
+        } catch (SQLException e) {
+            System.out.println("Erreur lors de la selection de client: " + e.getMessage());
             return null;
         }
     }
