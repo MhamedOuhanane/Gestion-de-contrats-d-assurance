@@ -17,11 +17,11 @@ public class ClientRepositoryImpl implements ClientRepository {
     public Client createClient(Client client) {
         String insertQuery = "INSERT INTO client (id, nom, prenom, email, conseiller_id) VALUES (?, ?, ?, ?, ?)";
         try {
-            Person person = (Person) client;
-            person = this.personRepository.createPerson(client);
-            PreparedStatement stmt = conn.prepareStatement(insertQuery, Statement.RETURN_GENERATED_KEYS);
+            Person person = this.personRepository.createPerson(client);
+            PreparedStatement stmt = conn.prepareStatement(insertQuery);
 
-            stmt.setInt(1, person.getId());
+            client.setId(person.getId());
+            stmt.setInt(1, client.getId());
             stmt.setString(2, client.getNom());
             stmt.setString(3, client.getPrenom());
             stmt.setString(4, client.getEmail());
@@ -29,13 +29,9 @@ public class ClientRepositoryImpl implements ClientRepository {
 
             int rowsInserted = stmt.executeUpdate();
             if (rowsInserted > 0) {
-                try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
-                    if (generatedKeys.next()) {
-                        client.setId(generatedKeys.getInt("id"));
-                    }
-                }
+                return client;
             }
-            return client;
+            return null;
         } catch (SQLException e) {
             System.out.println("Erreur lors de l'insert de client: " + e.getMessage());
             return null;
