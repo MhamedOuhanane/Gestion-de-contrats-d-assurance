@@ -90,11 +90,10 @@ public class ConseillerRepositoryImpl implements ConseillerRepository {
         try (PreparedStatement stmt = conn.prepareStatement(deleteQuery)) {
             stmt.setInt(1, conseiller.getId());
             int rowsAff = stmt.executeUpdate();
-            if (rowsAff > 0) {
-                return true;
-            } else {
+            if (rowsAff <= 0) {
                 throw new SQLException("Suppression échouée");
             }
+            return true;
         } catch (SQLException e) {
             System.out.println("Erreur lors de la suppression de client: " + e.getMessage());
             return false;
