@@ -34,7 +34,14 @@ public class ContratServiceImpl implements ContratService {
     }
 
     @Override
-    public Contrat deleteContrat(Integer contrat_Id) {
-        return null;
+    public Boolean deleteContrat(Integer contrat_id) {
+        if (contrat_id == null) throw new IllegalArgumentException("L'id de contrat ne peut pas être null");
+        try {
+            Contrat contrat = this.contratRepository.findContrat(contrat_id)
+                    .orElseThrow(() -> new RuntimeException("Aucun contrat trouvé avec l'id: " + contrat_id));
+            return this.contratRepository.deleteContrat(contrat);
+        } catch (RuntimeException e) {
+            throw new RuntimeException("Erreur dans le service Contrat: " + e.getMessage(), e);
+        }
     }
 }
