@@ -8,6 +8,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class ClientServiceImpl implements ClientService {
     private final ClientRepository clientRepository;
@@ -59,7 +60,17 @@ public class ClientServiceImpl implements ClientService {
 
     @Override
     public List<Client> getFiltreClients() {
-        return Collections.emptyList();
+        try {
+            return this.clientRepository.getAllClient().stream()
+                    .sorted((c1, c2) -> {
+                        int compareNom = c1.getNom().compareToIgnoreCase(c2.getNom());
+                        if (compareNom == 0) return c1.getPrenom().compareToIgnoreCase(c2.getPrenom());
+                        return compareNom;
+                    })
+                    .collect(Collectors.toList());
+        } catch (RuntimeException e) {
+            throw new RuntimeException("Erreur dans le service Client: " + e.getMessage(), e);
+        }
     }
 
     @Override
