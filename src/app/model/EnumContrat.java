@@ -5,12 +5,11 @@ public enum EnumContrat {
     IMMOBILIER("Immobilier"),
     AUTOMOBILE("Automobile");
 
-    private final String description;
+    private String description;
 
     EnumContrat(String description) {
         this.description = description;
     }
-
     public String getDescription() {
         return description;
     }

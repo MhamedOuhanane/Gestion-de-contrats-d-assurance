@@ -24,7 +24,13 @@ public class ContratServiceImpl implements ContratService {
 
     @Override
     public Contrat findContrat(Integer contrat_id) {
-        return null;
+        if (contrat_id == null) throw new IllegalArgumentException("L'id de contrat ne peut pas être null");
+        try {
+            return this.contratRepository.findContrat(contrat_id)
+                    .orElseThrow(() -> new RuntimeException("Aucun contrat trouvé avec l'id: " + contrat_id));
+        } catch (RuntimeException e) {
+            throw new RuntimeException("Erreur dans le service Contrat: " + e.getMessage(), e);
+        }
     }
 
     @Override
