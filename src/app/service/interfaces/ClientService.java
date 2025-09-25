@@ -2,6 +2,7 @@ package app.service.interfaces;
 
 import app.model.Client;
 import app.model.Contrat;
+import app.model.Sinistre;
 
 import java.util.List;
 
@@ -12,5 +13,6 @@ public interface ClientService {
     List<Client> getFiltreClients();
     Boolean deleteClient(Integer client_id);
     List<Contrat> getContratsClient(Integer client_id);
+    List<Sinistre> getSinistresClient(Integer client_id);
 
 }
