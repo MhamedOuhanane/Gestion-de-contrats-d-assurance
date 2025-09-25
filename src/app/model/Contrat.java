@@ -18,6 +18,13 @@ public class Contrat {
         this.client_id = client_id;
     }
 
+    public Contrat(EnumContrat typeContrat, LocalDate dateDebut, LocalDate dateFin, Integer client_id) {
+        this.typeContrat = typeContrat;
+        this.dateDebut = dateDebut;
+        this.dateFin = dateFin;
+        this.client_id = client_id;
+    }
+
     public void setId(Integer id) {
         this.id = id;
     }

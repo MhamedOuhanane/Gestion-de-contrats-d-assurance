@@ -19,6 +19,14 @@ public class Sinistre {
         this.contrat_id = contrat_id;
     }
 
+    public Sinistre(EnumSinistre typeSinistre, LocalDateTime date, Double montant, String description, Integer contrat_id) {
+        this.typeSinistre = typeSinistre;
+        this.date = date;
+        this.montant = montant;
+        this.description = description;
+        this.contrat_id = contrat_id;
+    }
+
     public void setId(Integer id) {
         this.id = id;
     }

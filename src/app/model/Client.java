@@ -8,6 +8,11 @@ public class Client extends Person {
         this.conseiller_id = conseiller_id;
     }
 
+    public Client(String nom, String prenom, String email, Integer conseiller_id) {
+        super(nom, prenom, email);
+        this.conseiller_id = conseiller_id;
+    }
+
     public void setConseiller_id(Integer conseiller_id) {
         this.conseiller_id = conseiller_id;
     }

@@ -13,6 +13,12 @@ public abstract class Person {
         this.email = email;
     }
 
+    public Person(String nom, String prenom, String email) {
+        this.nom = nom;
+        this.prenom = prenom;
+        this.email = email;
+    }
+
     public void setId(Integer id) {
         this.id = id;
     }
