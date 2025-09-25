@@ -28,7 +28,7 @@ public class PersonRepositoryImpl implements PersonRepository {
             }
             return person;
         } catch (SQLException e) {
-            throw new RuntimeException("Erreur SQL lors de la création de Person", e);
+            throw new RuntimeException("Erreur SQL lors de la création de Person " + e.getMessage(), e);
         }
     }
 

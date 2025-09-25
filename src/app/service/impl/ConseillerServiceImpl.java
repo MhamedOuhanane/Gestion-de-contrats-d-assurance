@@ -6,15 +6,13 @@ import app.repository.interfaces.ClientRepository;
 import app.repository.interfaces.ConseillerRepository;
 import app.service.interfaces.ConseillerService;
 
-import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class ConseillerServiceImpl implements ConseillerService {
-    private ConseillerRepository conseillerRepository;
-    private ClientRepository clientRepository;
+    private final ConseillerRepository conseillerRepository;
+    private final ClientRepository clientRepository;
 
     public ConseillerServiceImpl(ConseillerRepository conseillerRepository, ClientRepository clientRepository) {
         this.conseillerRepository = conseillerRepository;
@@ -30,7 +28,7 @@ public class ConseillerServiceImpl implements ConseillerService {
             return this.conseillerRepository.createConseiller(conseiller)
                     .orElseThrow(() -> new RuntimeException("Impossible d'ajouter le conseiller: " + conseiller.getNom() + conseiller.getPrenom()));
         } catch (RuntimeException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Erreur dans le service Conseiller: " + e.getMessage(), e);
         }
     }
 
@@ -43,7 +41,7 @@ public class ConseillerServiceImpl implements ConseillerService {
             return this.conseillerRepository.findConseiller(conseiller_id)
                     .orElseThrow(() -> new RuntimeException("Aucun conseiller trouvé avec l'id: " + conseiller_id));
         } catch (RuntimeException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Erreur dans le service Conseiller: " + e.getMessage(), e);
         }
     }
 
@@ -57,10 +55,10 @@ public class ConseillerServiceImpl implements ConseillerService {
                     .orElseThrow(() -> new RuntimeException("Aucun conseiller trouvé avec l'id: " + conseiller_id));
             List<Client> clients = this.clientRepository.getAllClient();
             return clients.stream()
-                    .filter(client -> Objects.equals(client.getConseiller_id(), conseiller_id))
+                    .filter(client -> Objects.equals(client.getConseiller_id(), conseiller.getId()))
                     .collect(Collectors.toList());
         } catch (RuntimeException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Erreur dans le service Conseiller: " + e.getMessage(), e);
         }
     }
 
@@ -75,7 +73,7 @@ public class ConseillerServiceImpl implements ConseillerService {
                     .orElseThrow(() -> new RuntimeException("Aucun conseiller trouvé avec l'id: " + conseiller_id));
             return this.conseillerRepository.deleteConseiller(conseiller);
         } catch (RuntimeException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Erreur dans le service Conseiller: " + e.getMessage(), e);
         }
     }
 }
