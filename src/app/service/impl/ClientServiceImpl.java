@@ -75,7 +75,14 @@ public class ClientServiceImpl implements ClientService {
 
     @Override
     public Boolean deleteClient(Integer client_id) {
-        return null;
+        if (client_id == null) throw new RuntimeException("L'id de client ne peut pas être null");
+        try {
+            Client client = this.clientRepository.findClient(client_id)
+                    .orElseThrow(() -> new RuntimeException("Aucun client trouvé avec l'id: " + client_id));
+            return this.clientRepository.deleteClient(client);
+        } catch (RuntimeException e) {
+            throw new RuntimeException("Erreur dans le service Client: " + e.getMessage(), e);
+        }
     }
 
 }
