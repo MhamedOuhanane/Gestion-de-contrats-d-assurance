@@ -66,6 +66,16 @@ public class ConseillerServiceImpl implements ConseillerService {
 
     @Override
     public Boolean deleteConsiller(Integer conseiller_id) {
-        return null;
+        if (conseiller_id == null) {
+            throw new IllegalArgumentException("L'id conseiller ne peut pas être null");
+        }
+
+        try {
+            Conseiller conseiller = this.conseillerRepository.findConseiller(conseiller_id)
+                    .orElseThrow(() -> new RuntimeException("Aucun conseiller trouvé avec l'id: " + conseiller_id));
+            return this.conseillerRepository.deleteConseiller(conseiller);
+        } catch (RuntimeException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
