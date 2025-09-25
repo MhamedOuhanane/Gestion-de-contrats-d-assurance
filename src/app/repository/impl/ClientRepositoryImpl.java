@@ -7,9 +7,7 @@ import app.repository.interfaces.ClientRepository;
 import app.repository.interfaces.PersonRepository;
 
 import java.sql.*;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 public class ClientRepositoryImpl implements ClientRepository {
     private PersonRepository personRepository;
@@ -65,12 +63,12 @@ public class ClientRepositoryImpl implements ClientRepository {
     }
 
     @Override
-    public Map<Integer, Client> getAllClient() {
+    public List<Client> getAllClient() {
         String selectQuery = "SELECT * FROM client";
         try {
             PreparedStatement stmt = conn.prepareStatement(selectQuery);
             ResultSet resultSet = stmt.executeQuery();
-            Map<Integer, Client> clients = new HashMap<>();
+            List<Client> clients = new ArrayList<>();
             while (resultSet.next()) {
                 Integer id = resultSet.getInt("id");
                 String nom = resultSet.getString("nom");
@@ -79,7 +77,7 @@ public class ClientRepositoryImpl implements ClientRepository {
                 Integer conseiller_id = resultSet.getInt("conseiller_id");
 
                 Client client = new Client(id, nom, prenom, email, conseiller_id);
-                clients.put(id, client);
+                clients.add(client);
             }
 
             return clients;

@@ -10,9 +10,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 public class ConseillerRepositoryImpl implements ConseillerRepository {
     private static final Connection conn = DatabaseConfig.getInstance().getConnection();
@@ -67,11 +65,11 @@ public class ConseillerRepositoryImpl implements ConseillerRepository {
     }
 
     @Override
-    public Map<Integer, Conseiller> getAllConseiller() {
+    public List<Conseiller> getAllConseiller() {
         String selectQuery = "SELECT * FROM conseiller";
         try (PreparedStatement stmt = conn.prepareStatement(selectQuery)) {
             ResultSet resultSet = stmt.executeQuery();
-            Map<Integer, Conseiller> conseillers = new HashMap<>();
+            List<Conseiller> conseillers = new ArrayList<>();
             while (resultSet.next()) {
                 Integer id = resultSet.getInt("id");
                 String nom = resultSet.getString("nom");
@@ -79,7 +77,7 @@ public class ConseillerRepositoryImpl implements ConseillerRepository {
                 String email = resultSet.getString("email");
 
                 Conseiller conseiller = new Conseiller(id, nom, prenom, email);
-                conseillers.put(conseiller.getId(), conseiller);
+                conseillers.add(conseiller);
             }
             return conseillers;
         } catch (SQLException e) {

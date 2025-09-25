@@ -7,9 +7,7 @@ import app.repository.interfaces.SinistreRepository;
 
 import java.sql.*;
 import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 public class SinistreRepositoryImpl implements SinistreRepository {
     private static final Connection conn = DatabaseConfig.getInstance().getConnection();
@@ -41,11 +39,11 @@ public class SinistreRepositoryImpl implements SinistreRepository {
     }
 
     @Override
-    public Map<Integer, Sinistre> getAllSinistre() {
+    public List<Sinistre> getAllSinistre() {
         String selectQuery = "SELECT * FROM sinistre";
         try (PreparedStatement stmt = conn.prepareStatement(selectQuery)) {
             ResultSet resultSet = stmt.executeQuery();
-            Map<Integer, Sinistre> sinistres = new HashMap<>();
+            List<Sinistre> sinistres = new ArrayList<>();
             while (resultSet.next()) {
                 Integer id = resultSet.getInt("id");
                 EnumSinistre typeSinistre = EnumSinistre.valueOf(resultSet.getString("typeSinistre"));
@@ -55,7 +53,7 @@ public class SinistreRepositoryImpl implements SinistreRepository {
                 Integer contrat_id = resultSet.getInt("contrat_id");
 
                 Sinistre sinistre = new Sinistre(id, typeSinistre, date, montant, description, contrat_id);
-                sinistres.put(id, sinistre);
+                sinistres.add(sinistre);
             }
             return sinistres;
         } catch (SQLException e) {

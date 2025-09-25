@@ -33,7 +33,7 @@ CREATE TABLE IF NOT EXISTS contrat(
 CREATE TABLE IF NOT EXISTS sinistre (
     id INT AUTO_INCREMENT PRIMARY KEY,
     typeSinistre ENUM("accident de voiture", "accident de maison", 'maladie'),
-    date DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    date TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     montant DECIMAL(10,2) NOT NULL,
     description TEXT NOT NULL,
     contrat_id INT NOT NULL,

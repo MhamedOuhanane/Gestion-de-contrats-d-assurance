@@ -6,10 +6,9 @@ import app.model.EnumContrat;
 import app.repository.interfaces.ContratRepository;
 
 import java.sql.*;
+import java.sql.Date;
 import java.time.LocalDate;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 public class ContratRepositoryImpl implements ContratRepository {
     private static final Connection conn = DatabaseConfig.getInstance().getConnection();
@@ -40,11 +39,11 @@ public class ContratRepositoryImpl implements ContratRepository {
     }
 
     @Override
-    public Map<Integer, Contrat> getAllContrat() {
+    public List<Contrat> getAllContrat() {
         String selectQuery = "SELECT * FROM contrat";
         try (PreparedStatement stmt = conn.prepareStatement(selectQuery)) {
             ResultSet resultSet = stmt.executeQuery();
-            Map<Integer, Contrat> contrats = new HashMap<>();
+            List<Contrat> contrats = new ArrayList<>();
             while (resultSet.next()) {
                 Integer id = resultSet.getInt("id");
                 EnumContrat typeContrat = EnumContrat.valueOf(resultSet.getString("typeContrat"));
@@ -53,7 +52,7 @@ public class ContratRepositoryImpl implements ContratRepository {
                 Integer client_id = resultSet.getInt("client_id");
 
                 Contrat contrat = new Contrat(id, typeContrat, dateDebut, dateFin, client_id);
-                contrats.put(id, contrat);
+                contrats.add(contrat);
             }
             return contrats;
         } catch (SQLException e) {
