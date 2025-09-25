@@ -10,10 +10,9 @@ public class PersonRepositoryImpl implements PersonRepository {
     private static final Connection conn = DatabaseConfig.getInstance().getConnection();
 
     @Override
-    public Person createPerson(Person person) throws SQLException {
+    public Person createPerson(Person person) {
         String insertQuery = "INSERT INTO person (nom, prenom, email) VALUES (?, ?, ?)";
         try (PreparedStatement stmt = conn.prepareStatement(insertQuery, Statement.RETURN_GENERATED_KEYS)) {
-
             stmt.setString(1, person.getNom());
             stmt.setString(2, person.getPrenom());
             stmt.setString(3, person.getEmail());
@@ -28,7 +27,7 @@ public class PersonRepositoryImpl implements PersonRepository {
             }
             return person;
         } catch (SQLException e) {
-            throw new SQLException(e.getMessage());
+            throw new RuntimeException("Erreur SQL lors de la création de Person", e);
         }
     }
 }

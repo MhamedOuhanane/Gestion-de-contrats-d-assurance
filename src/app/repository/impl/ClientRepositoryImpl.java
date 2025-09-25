@@ -8,13 +8,19 @@ import app.repository.interfaces.PersonRepository;
 
 import java.sql.*;
 import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 
 public class ClientRepositoryImpl implements ClientRepository {
     private PersonRepository personRepository;
     private static final Connection conn = DatabaseConfig.getInstance().getConnection();
 
+    public ClientRepositoryImpl(PersonRepository personRepository) {
+        this.personRepository = personRepository;
+    }
+
     @Override
-    public Client createClient(Client client) {
+    public Optional<Client> createClient(Client client) {
         String insertQuery = "INSERT INTO client (id, nom, prenom, email, conseiller_id) VALUES (?, ?, ?, ?, ?)";
         try {
             Person person = this.personRepository.createPerson(client);
@@ -29,17 +35,16 @@ public class ClientRepositoryImpl implements ClientRepository {
 
             int rowsInserted = stmt.executeUpdate();
             if (rowsInserted > 0) {
-                return client;
+                return Optional.of(client);
             }
-            return null;
+            return Optional.empty();
         } catch (SQLException e) {
-            System.out.println("Erreur lors de l'insert de client: " + e.getMessage());
-            return null;
+            throw new RuntimeException("Erreur lors de l'insert de client: " , e);
         }
     }
 
     @Override
-    public Client findClient(Integer client_id) {
+    public Optional<Client> findClient(Integer client_id) {
         String selectQuery = "SELECT * FROM client WHERE id = ?";
         try (PreparedStatement stmt = conn.prepareStatement(selectQuery)) {
             stmt.setInt(1, client_id);
@@ -51,22 +56,21 @@ public class ClientRepositoryImpl implements ClientRepository {
                 String email = resultSet.getString("email");
                 Integer conseiller_id = resultSet.getInt("conseiller_id");
 
-                return new Client(id, nom, prenom, email, conseiller_id);
+                return Optional.of(new Client(id, nom, prenom, email, conseiller_id));
             }
-            return null;
+            return Optional.empty();
         } catch (SQLException e) {
-            System.out.println("Erreur lors de la selection de client: " + e.getMessage());
-            return null;
+            throw new RuntimeException("Erreur lors de la selection de client: " , e);
         }
     }
 
     @Override
-    public HashMap<Integer, Client> getAllClient() {
+    public Map<Integer, Client> getAllClient() {
         String selectQuery = "SELECT * FROM client";
         try {
             PreparedStatement stmt = conn.prepareStatement(selectQuery);
             ResultSet resultSet = stmt.executeQuery();
-            HashMap<Integer, Client> clients = new HashMap<>();
+            Map<Integer, Client> clients = new HashMap<>();
             while (resultSet.next()) {
                 Integer id = resultSet.getInt("id");
                 String nom = resultSet.getString("nom");
@@ -80,8 +84,7 @@ public class ClientRepositoryImpl implements ClientRepository {
 
             return clients;
         } catch (SQLException e) {
-            System.out.println("Erreur lors de la selection des clients: " + e.getMessage());
-            return null;
+            throw new RuntimeException("Erreur lors de la selection des clients: " , e);
         }
     }
 
@@ -93,13 +96,9 @@ public class ClientRepositoryImpl implements ClientRepository {
             PreparedStatement stmt = conn.prepareStatement(deleteQuery);
             stmt.setInt(1, client.getId());
             int rowsAff = stmt.executeUpdate();
-            if (rowsAff <= 0) {
-                throw new SQLException("Suppression échouée");
-            }
-            return true;
+            return rowsAff > 0;
         } catch (SQLException e) {
-            System.out.println("Erreur lors de la suppression des clients: " + e.getMessage());
-            return false;
+            throw new RuntimeException("Erreur lors de la suppression des clients: " , e);
         }
     }
 }

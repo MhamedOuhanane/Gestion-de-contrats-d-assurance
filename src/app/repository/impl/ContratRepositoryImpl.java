@@ -8,18 +8,20 @@ import app.repository.interfaces.ContratRepository;
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 
 public class ContratRepositoryImpl implements ContratRepository {
     private static final Connection conn = DatabaseConfig.getInstance().getConnection();
 
     @Override
-    public Contrat insertContrat(Contrat contrat) {
+    public Optional<Contrat> insertContrat(Contrat contrat) {
         String insertQuery = "INSERT INTO contrat (typeContrat, dateDebut, dateFin, client_id) VALUES (?, ?, ?, ?)";
 
         try (PreparedStatement stmt = conn.prepareStatement(insertQuery, Statement.RETURN_GENERATED_KEYS)){
             stmt.setString(1, contrat.getTypeContrat().getDescription());
             stmt.setDate(2, Date.valueOf(contrat.getDateDebut()));
-            stmt.setDate(3, Date.valueOf(contrat.getDateDebut()));
+            stmt.setDate(3, Date.valueOf(contrat.getDateFin()));
             stmt.setInt(4, contrat.getClient_id());
 
             int rowsAff = stmt.executeUpdate();
@@ -31,19 +33,18 @@ public class ContratRepositoryImpl implements ContratRepository {
                     }
                 }
             }
-            return contrat;
+            return Optional.of(contrat);
         } catch (SQLException e) {
-            System.out.println("Erreur lors de l'insert du contrat: " + e.getMessage());
-            return null;
+            throw new RuntimeException("Erreur lors de l'insert du contrat: " , e);
         }
     }
 
     @Override
-    public HashMap<Integer, Contrat> getAllContrat() {
+    public Map<Integer, Contrat> getAllContrat() {
         String selectQuery = "SELECT * FROM contrat";
         try (PreparedStatement stmt = conn.prepareStatement(selectQuery)) {
             ResultSet resultSet = stmt.executeQuery();
-            HashMap<Integer, Contrat> contrats = new HashMap<>();
+            Map<Integer, Contrat> contrats = new HashMap<>();
             while (resultSet.next()) {
                 Integer id = resultSet.getInt("id");
                 EnumContrat typeContrat = EnumContrat.valueOf(resultSet.getString("typeContrat"));
@@ -56,13 +57,12 @@ public class ContratRepositoryImpl implements ContratRepository {
             }
             return contrats;
         } catch (SQLException e) {
-            System.out.println("Erreur lors du selection des contrats: " + e.getMessage());
-            return null;
+            throw new RuntimeException("Erreur lors du selection des contrats: " , e);
         }
     }
 
     @Override
-    public Contrat findContrat(Integer contrat_id) {
+    public Optional<Contrat> findContrat(Integer contrat_id) {
         String selectQuery = "SELECT * FROM contrat WHERE id = ?";
         try (PreparedStatement stmt = conn.prepareStatement(selectQuery)) {
             stmt.setInt(1, contrat_id);
@@ -74,12 +74,11 @@ public class ContratRepositoryImpl implements ContratRepository {
                 LocalDate dateFin = resultSet.getDate("dateFin").toLocalDate();
                 Integer client_id = resultSet.getInt("client_id");
 
-                return new Contrat(id, typeContrat, dateDebut, dateFin, client_id);
+                return Optional.of(new Contrat(id, typeContrat, dateDebut, dateFin, client_id));
             }
-            return null;
+            return Optional.empty();
         } catch (SQLException e) {
-            System.out.println("Erreur lors du selection des contrats: " + e.getMessage());
-            return null;
+            throw new RuntimeException("Erreur lors du selection des contrats: " , e);
         }
     }
 
@@ -89,13 +88,9 @@ public class ContratRepositoryImpl implements ContratRepository {
        try (PreparedStatement stmt = conn.prepareStatement(deleteQuery)) {
            stmt.setInt(1, contrat.getId());
            int rowsAff = stmt.executeUpdate();
-           if (rowsAff <= 0) {
-               throw new SQLException("Suppression échouée");
-           }
-           return true;
+           return rowsAff > 0;
        } catch (SQLException e) {
-           System.out.println("Erreur lors du suppression de contrat: " + e.getMessage());
-           return false;
+           throw new RuntimeException("Erreur lors du suppression de contrat: " , e);
        }
     }
 }

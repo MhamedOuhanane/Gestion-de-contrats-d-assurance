@@ -11,13 +11,19 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 
 public class ConseillerRepositoryImpl implements ConseillerRepository {
     private static final Connection conn = DatabaseConfig.getInstance().getConnection();
-    private PersonRepository personRepository;
+    private final PersonRepository personRepository;
+
+    public  ConseillerRepositoryImpl(PersonRepository personRepository) {
+        this.personRepository = personRepository;
+    }
 
     @Override
-    public Conseiller createConseiller(Conseiller conseiller) {
+    public Optional<Conseiller> createConseiller(Conseiller conseiller) {
         String insertQuery = "INSERT INTO conseiller (id, nom, prenom, email) VALUES (?, ?, ?, ?)";
         try {
             Person person = personRepository.createPerson(conseiller);
@@ -32,17 +38,16 @@ public class ConseillerRepositoryImpl implements ConseillerRepository {
 
             int rowsAff = stmt.executeUpdate();
             if (rowsAff > 0) {
-                return conseiller;
+                return Optional.of(conseiller);
             }
-            return null;
+            return Optional.empty();
         } catch (SQLException e) {
-            System.out.println("Erreur lors de l'insert de conseiller: " + e.getMessage());
-            return null;
+            throw new RuntimeException("Erreur lors de l'insert de conseiller: ", e);
         }
     }
 
     @Override
-    public Conseiller findConseiller(Integer conseiller_id) {
+    public Optional<Conseiller> findConseiller(Integer conseiller_id) {
         String selectQuery = "SELECT * FROM conseiller WHERE id = ?";
         try (PreparedStatement stmt = conn.prepareStatement(selectQuery)) {
             stmt.setInt(1, conseiller_id);
@@ -53,21 +58,20 @@ public class ConseillerRepositoryImpl implements ConseillerRepository {
                 String prenom = resultSet.getString("prenom");
                 String email = resultSet.getString("email");
 
-                return new Conseiller(id, nom, prenom, email);
+                return Optional.of(new Conseiller(id, nom, prenom, email));
             }
-            return null;
+            return Optional.empty();
         } catch (SQLException e) {
-            System.out.println("Erreur lors de trouver le conseiller: " + e.getMessage());
-            return null;
+            throw new RuntimeException("Erreur lors de trouver le conseiller: ", e);
         }
     }
 
     @Override
-    public HashMap<Integer, Conseiller> getAllConseiller() {
+    public Map<Integer, Conseiller> getAllConseiller() {
         String selectQuery = "SELECT * FROM conseiller";
         try (PreparedStatement stmt = conn.prepareStatement(selectQuery)) {
             ResultSet resultSet = stmt.executeQuery();
-            HashMap<Integer, Conseiller> conseillers = new HashMap<>();
+            Map<Integer, Conseiller> conseillers = new HashMap<>();
             while (resultSet.next()) {
                 Integer id = resultSet.getInt("id");
                 String nom = resultSet.getString("nom");
@@ -79,8 +83,7 @@ public class ConseillerRepositoryImpl implements ConseillerRepository {
             }
             return conseillers;
         } catch (SQLException e) {
-            System.out.println("Erreur lors de trouver le conseiller: " + e.getMessage());
-            return null;
+            throw new RuntimeException("Erreur lors de trouver les conseiller: " , e);
         }
     }
 
@@ -90,13 +93,9 @@ public class ConseillerRepositoryImpl implements ConseillerRepository {
         try (PreparedStatement stmt = conn.prepareStatement(deleteQuery)) {
             stmt.setInt(1, conseiller.getId());
             int rowsAff = stmt.executeUpdate();
-            if (rowsAff <= 0) {
-                throw new SQLException("Suppression échouée");
-            }
-            return true;
+            return rowsAff > 0;
         } catch (SQLException e) {
-            System.out.println("Erreur lors de la suppression de client: " + e.getMessage());
-            return false;
+            throw new RuntimeException("Erreur lors de la suppression de client: ", e);
         }
     }
 }

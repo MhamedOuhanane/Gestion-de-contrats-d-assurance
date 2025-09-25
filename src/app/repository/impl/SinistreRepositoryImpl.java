@@ -6,21 +6,21 @@ import app.model.EnumSinistre;
 import app.repository.interfaces.SinistreRepository;
 
 import java.sql.*;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 
 public class SinistreRepositoryImpl implements SinistreRepository {
     private static final Connection conn = DatabaseConfig.getInstance().getConnection();
 
     @Override
-    public Sinistre insertSinistre(Sinistre sinistre) {
+    public Optional<Sinistre> insertSinistre(Sinistre sinistre) {
         String insertQuery = "INSERT INTO sinistre (typeSinistre, date, montant, description, contrat_id) VALUES (?, ?, ?, ?, ?)";
 
         try (PreparedStatement stmt = conn.prepareStatement(insertQuery, Statement.RETURN_GENERATED_KEYS)){
             stmt.setString(1, sinistre.getTypeSinistre().getDescription());
-            stmt.setDate(2, Date.valueOf
-                    (String.valueOf(sinistre.getDate())));
+            stmt.setTimestamp(2, Timestamp.valueOf(sinistre.getDate()));
             stmt.setDouble(3, sinistre.getMontant());
             stmt.setString(4, sinistre.getDescription());
             stmt.setInt(5, sinistre.getContrat_id());
@@ -34,23 +34,22 @@ public class SinistreRepositoryImpl implements SinistreRepository {
                     }
                 }
             }
-            return sinistre;
+            return Optional.of(sinistre);
         } catch (SQLException e) {
-            System.out.println("Erreur lors de l'insert du sinistre: " + e.getMessage());
-            return null;
+            throw new RuntimeException("Erreur lors de l'insert du sinistre: " , e);
         }
     }
 
     @Override
-    public HashMap<Integer, Sinistre> getAllSinistre() {
+    public Map<Integer, Sinistre> getAllSinistre() {
         String selectQuery = "SELECT * FROM sinistre";
         try (PreparedStatement stmt = conn.prepareStatement(selectQuery)) {
             ResultSet resultSet = stmt.executeQuery();
-            HashMap<Integer, Sinistre> sinistres = new HashMap<>();
+            Map<Integer, Sinistre> sinistres = new HashMap<>();
             while (resultSet.next()) {
                 Integer id = resultSet.getInt("id");
                 EnumSinistre typeSinistre = EnumSinistre.valueOf(resultSet.getString("typeSinistre"));
-                LocalDateTime date = resultSet.getDate("dateDebut").toLocalDate().atTime(0, 0);
+                LocalDateTime date = resultSet.getTimestamp("date").toLocalDateTime();
                 Double montant = resultSet.getDouble("montant");
                 String description = resultSet.getString("description");
                 Integer contrat_id = resultSet.getInt("contrat_id");
@@ -60,13 +59,12 @@ public class SinistreRepositoryImpl implements SinistreRepository {
             }
             return sinistres;
         } catch (SQLException e) {
-            System.out.println("Erreur lors du selection des sinistres: " + e.getMessage());
-            return null;
+            throw new RuntimeException("Erreur lors du selection des sinistres: " , e);
         }
     }
 
     @Override
-    public Sinistre findSinistre(Integer sinistre_id) {
+    public Optional<Sinistre> findSinistre(Integer sinistre_id) {
         String selectQuery = "SELECT * FROM sinistre WHERE id = ?";
         try (PreparedStatement stmt = conn.prepareStatement(selectQuery)) {
             stmt.setInt(1, sinistre_id);
@@ -74,17 +72,16 @@ public class SinistreRepositoryImpl implements SinistreRepository {
             if (resultSet.next()) {
                 Integer id = resultSet.getInt("id");
                 EnumSinistre typeSinistre = EnumSinistre.valueOf(resultSet.getString("typeSinistre"));
-                LocalDateTime date = resultSet.getDate("dateDebut").toLocalDate().atTime(0, 0);
+                LocalDateTime date = resultSet.getTimestamp("date").toLocalDateTime();
                 Double montant = resultSet.getDouble("montant");
                 String description = resultSet.getString("description");
                 Integer contrat_id = resultSet.getInt("contrat_id");
 
-                return new Sinistre(id, typeSinistre, date, montant, description, contrat_id);
+                return Optional.of(new  Sinistre(id, typeSinistre, date, montant, description, contrat_id));
             }
-            return null;
+            return Optional.empty();
         } catch (SQLException e) {
-            System.out.println("Erreur lors du selection des sinistres: " + e.getMessage());
-            return null;
+            throw new RuntimeException("Erreur lors du selection des sinistres: " , e);
         }
     }
 
@@ -94,13 +91,9 @@ public class SinistreRepositoryImpl implements SinistreRepository {
         try (PreparedStatement stmt = conn.prepareStatement(deleteQuery)) {
             stmt.setInt(1, sinistre.getId());
             int rowsAff = stmt.executeUpdate();
-            if (rowsAff <= 0) {
-                throw new SQLException("Suppression échouée");
-            }
-            return true;
+            return rowsAff > 0;
         } catch (SQLException e) {
-            System.out.println("Erreur lors du suppression de sinistre: " + e.getMessage());
-            return false;
+            throw new RuntimeException("Erreur lors du suppression de sinistre: " , e);
         }
     }
 }
