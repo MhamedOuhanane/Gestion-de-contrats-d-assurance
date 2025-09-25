@@ -1,6 +1,7 @@
 package app.repository.impl;
 
 import app.config.DatabaseConfig;
+import app.model.Conseiller;
 import app.model.Person;
 import app.repository.interfaces.PersonRepository;
 
@@ -28,6 +29,18 @@ public class PersonRepositoryImpl implements PersonRepository {
             return person;
         } catch (SQLException e) {
             throw new RuntimeException("Erreur SQL lors de la création de Person", e);
+        }
+    }
+
+    @Override
+    public Boolean deletePerson(Person person) {
+        String deleteQuery = "DELETE FROM person WHERE id = ?";
+        try (PreparedStatement stmt = conn.prepareStatement(deleteQuery)) {
+            stmt.setInt(1, person.getId());
+            int rowsAff = stmt.executeUpdate();
+            return rowsAff > 0;
+        } catch (SQLException e) {
+            throw new RuntimeException("Erreur lors de la suppression de person: ", e);
         }
     }
 }

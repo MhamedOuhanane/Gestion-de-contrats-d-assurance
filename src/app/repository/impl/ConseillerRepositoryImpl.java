@@ -88,12 +88,16 @@ public class ConseillerRepositoryImpl implements ConseillerRepository {
     @Override
     public boolean deleteConseiller(Conseiller conseiller) {
         String deleteQuery = "DELETE FROM conseiller WHERE id = ?";
-        try (PreparedStatement stmt = conn.prepareStatement(deleteQuery)) {
+        try {
+            Boolean deletePerson = this.personRepository.deletePerson(conseiller);
+            if (!deletePerson) return false;
+
+            PreparedStatement stmt = conn.prepareStatement(deleteQuery);
             stmt.setInt(1, conseiller.getId());
             int rowsAff = stmt.executeUpdate();
             return rowsAff > 0;
         } catch (SQLException e) {
-            throw new RuntimeException("Erreur lors de la suppression de client: ", e);
+            throw new RuntimeException("Erreur lors de la suppression de conseiller: ", e);
         }
     }
 }

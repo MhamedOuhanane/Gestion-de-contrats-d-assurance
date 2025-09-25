@@ -91,6 +91,9 @@ public class ClientRepositoryImpl implements ClientRepository {
         String deleteQuery = "delete from client where id = ?";
 
         try {
+            Boolean deletePerson = this.personRepository.deletePerson(client);
+            if (!deletePerson) return false;
+
             PreparedStatement stmt = conn.prepareStatement(deleteQuery);
             stmt.setInt(1, client.getId());
             int rowsAff = stmt.executeUpdate();
