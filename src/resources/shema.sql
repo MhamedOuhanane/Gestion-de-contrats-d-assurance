@@ -23,7 +23,7 @@ CREATE TABLE IF NOT EXISTS client(
 
 CREATE TABLE IF NOT EXISTS contrat(
     id INT AUTO_INCREMENT PRIMARY KEY,
-    typeContrat ENUM("Automobile", "Immobilier", "Maladie"),
+    typeContrat ENUM("AUTOMOBILE", "IMMOBILIER", "MALADIE"),
     dateDebut DATE NOT NULL,
     dateFin DATE NOT NULL,
     client_id INT NOT NULL,
@@ -32,7 +32,7 @@ CREATE TABLE IF NOT EXISTS contrat(
 
 CREATE TABLE IF NOT EXISTS sinistre (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    typeSinistre ENUM("accident de voiture", "accident de maison", 'maladie'),
+    typeSinistre ENUM("VOITURE", "MAISON", "MALADIE"),
     date TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     montant DECIMAL(10,2) NOT NULL,
     description TEXT NOT NULL,

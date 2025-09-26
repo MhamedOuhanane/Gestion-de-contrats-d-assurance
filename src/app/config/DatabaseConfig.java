@@ -31,4 +31,5 @@ public class DatabaseConfig {
     public Connection getConnection() {
         return connection;
     }
+
 }
