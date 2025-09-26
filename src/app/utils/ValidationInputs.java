@@ -16,6 +16,7 @@ public class ValidationInputs {
         while (input == null) {
             try {
                 input = scanner.nextDouble();
+                scanner.nextLine();
                 if (input < 0)
                     throw new InputMismatchException("Le montant ne peut pas être saisi sous forme de valeur négative.");
             } catch (InputMismatchException exc) {
@@ -60,6 +61,19 @@ public class ValidationInputs {
                 input = null;
             }
             if (input == null) System.out.print("Ré-entrez votre choix: ");
+        }
+        return input;
+    }
+
+    public static String getParagraphInput() {
+        String input = null;
+        while (input == null) {
+            try {
+                input = scanner.nextLine();
+            } catch (InputMismatchException exc) {
+                System.out.println("🚫 Le paragraphe saisi est invalide.");
+            }
+            if (input == null) System.out.print("Ré-entrez votre paragraphe: ");
         }
         return input;
     }

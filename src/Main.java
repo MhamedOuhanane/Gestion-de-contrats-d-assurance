@@ -40,13 +40,13 @@ public class Main {
         ConseillerController conseillerController = new ConseillerController(conseillerService);
         ClientController clientController = new ClientController(clientService);
         ContratController contratController = new ContratController(contratService);
-        SinistreController sinistreController = new SinistreController();
+        SinistreController sinistreController = new SinistreController(sinistreService);
 
 //        View
         ConseillerView conseillerView = new ConseillerView(conseillerController);
         ClientView clientView = new ClientView(clientController);
         ContratView contratView = new ContratView(contratController);
-        SinistreView sinistreView = new SinistreView();
+        SinistreView sinistreView = new SinistreView(sinistreController);
 
         boolean connection = true;
         while (connection) {
@@ -71,6 +71,7 @@ public class Main {
                     contratView.menuContrat();
                     break;
                 case 4:
+                    sinistreView.menuSinistre();
                     break;
 
                 case 5:
