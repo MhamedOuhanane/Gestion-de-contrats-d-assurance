@@ -29,6 +29,7 @@ public class ClientView {
                     this.createView();
                     break;
                 case 2:
+                    this.deleteVeiw();
                     break;
                 case 3:
                     this.findByIdView();
@@ -61,6 +62,14 @@ public class ClientView {
 
 
         System.out.println(this.clientController.create(client));
+    }
+
+    public void deleteVeiw() {
+        System.out.println("\n+--+--+ Supprimer un Client +--+--+");
+        System.out.print("🔹Saisir Id de Client: ");
+        Integer id = ValidationInputs.getIntegerInput();
+
+        System.out.println(this.clientController.delete(id));
     }
 
     public void findByIdView() {

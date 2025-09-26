@@ -49,4 +49,16 @@ public class ClientController {
         }
     }
 
+    public String delete(Integer id) {
+        try {
+            Boolean delete = this.clientService.deleteClient(id);
+            if (delete) {
+                return "🗑️ Client avec ID " + id + " supprimé avec succès.";
+            } else {
+                return "⚠️ Aucun client trouvé avec ID " + id;
+            }
+        } catch (RuntimeException e) {
+            return "❌ Erreur: " + e.getMessage();
+        }
+    }
 }
