@@ -21,7 +21,8 @@ public class ClientView {
             System.out.println("4. Rechercher un Client par son nom de famille");
             System.out.println("5. Afficher les Contrats d'un Client");
             System.out.println("6. Afficher les Sinistres d'un Client");
-            System.out.println("7. Quitter");
+            System.out.println("7. Coût total des sinistres déclarés d’un client");
+            System.out.println("8. Quitter");
             System.out.print("Choix : ");
 
             int choix = ValidationInputs.getIntegerInput();
@@ -39,12 +40,15 @@ public class ClientView {
                     this.findByNomView();
                     break;
                 case 5:
-                    this.getContrats();
+                    this.getContratsView();
                     break;
                 case 6:
-                    this.getSinistres();
+                    this.getSinistresView();
                     break;
                 case 7:
+                    this.getTotalCoutView();
+                    break;
+                case 8:
                     connection = false;
                     break;
                 default:
@@ -93,7 +97,7 @@ public class ClientView {
         System.out.println(this.clientController.findByNom(nom));
     }
 
-    private void getContrats() {
+    private void getContratsView() {
         System.out.println("\n+--+--+ Afficher les Contrats d'un Client +--+--+");
         System.out.print("🔹Saisir Id de Client: ");
         Integer id = ValidationInputs.getIntegerInput();
@@ -101,12 +105,20 @@ public class ClientView {
         System.out.println(this.clientController.getContrats(id));
     }
 
-    private void getSinistres() {
+    private void getSinistresView() {
         System.out.println("\n+--+--+ Afficher les Sinistres d'un Client +--+--+");
         System.out.print("🔹Saisir Id de Client: ");
         Integer id = ValidationInputs.getIntegerInput();
 
         System.out.println(this.clientController.getSinistres(id));
     }
+
+    private void getTotalCoutView() {
+        System.out.println("\n+--+--+ Coût total des sinistres déclarés d’un client +--+--+");
+        System.out.print("🔹Saisir Id de Client: ");
+            Integer id = ValidationInputs.getIntegerInput();
+
+                System.out.println(this.clientController.getTotalMontSini(id));
+        }
 }
 

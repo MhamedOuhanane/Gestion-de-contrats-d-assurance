@@ -107,12 +107,9 @@ public class ClientServiceImpl implements ClientService {
     @Override
     public List<Sinistre> getSinistresClient(Integer client_id) {
         try {
-            List<Contrat> contrats = this.getContratsClient(client_id);
-            List<Sinistre> sinistres = new ArrayList<>();
-            for (Contrat contrat : contrats) {
-                sinistres.addAll(this.contratService.getSinistresContrat(contrat.getId()));
-            }
-            return sinistres;
+            return this.getContratsClient(client_id).stream()
+                    .flatMap(contrat -> this.contratService.getSinistresContrat(contrat.getId()).stream())
+                    .collect(Collectors.toList());
         } catch (RuntimeException e) {
             throw new RuntimeException("Erreur lors de récupération des sinistres du client " + client_id, e);
         }

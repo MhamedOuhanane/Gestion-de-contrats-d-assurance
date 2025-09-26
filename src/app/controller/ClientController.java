@@ -97,4 +97,14 @@ public class ClientController {
             return "❌ Erreur: " + e.getMessage();
         }
     }
+
+    public String getTotalMontSini(Integer id) {
+        try {
+            Double montantTotal = this.clientService.getCoutTotalSinistre(id);
+            return "💰 Coût total des sinistres déclarés par ce Client est " + montantTotal + " MAD";
+        } catch (RuntimeException e) {
+            return "❌ Erreur: " + e.getMessage();
+        }
+
+    }
 }

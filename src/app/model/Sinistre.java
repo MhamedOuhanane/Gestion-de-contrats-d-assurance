@@ -81,6 +81,6 @@ public class Sinistre {
         return "Sinistre numero: " + this.id + " | Type de Contrat: " + this.typeSinistre.getDescription()
                 + " | Debut: " +  this.date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"))
                 + " | Montant: " + this.montant
-                + " | Description: " + this.description ;
+                + " MAD | Description: " + this.description ;
     }
 }
