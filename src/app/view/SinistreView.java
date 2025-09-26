@@ -20,8 +20,10 @@ public class SinistreView {
             System.out.println("1. Ajouter un Sinistre");
             System.out.println("2. Supprimer un Sinistre");
             System.out.println("3. Rechercher un Sinistre par son ID");
-            System.out.println("4. Afficher les Sinistres d'un Sinistre");
-            System.out.println("5. Quitter");
+            System.out.println("4. Afficher les Sinistres triés par montant decroissant");
+            System.out.println("5. Afficher les Sinistres qui se sont produits avant une date");
+            System.out.println("6. Afficher les Sinistres dont le cout est superieur a un montant");
+            System.out.println("7. Quitter");
             System.out.print("Choix : ");
 
             int choix = ValidationInputs.getIntegerInput();
@@ -30,8 +32,10 @@ public class SinistreView {
                     this.createView();
                     break;
                 case 2:
+                    this.deleteView();
                     break;
                 case 3:
+                    this.findView();
                     break;
                 case 4:
                     break;
@@ -80,5 +84,21 @@ public class SinistreView {
         Sinistre sinistre = new Sinistre(typeSinistre, date, montant, description, contrat_id);
 
         System.out.println(this.sinistreController.create(sinistre));
+    }
+
+    private void deleteView() {
+        System.out.println("\n+--+--+ Supprimer un Sinistre +--+--+");
+        System.out.print("🔹Saisir Id de Sinistre: ");
+        Integer id = ValidationInputs.getIntegerInput();
+
+        System.out.println(this.sinistreController.delete(id));
+    }
+
+    private void findView() {
+        System.out.println("\n+--+--+ Rechercher un Sinistre par son ID +--+--+");
+        System.out.print("🔹Saisir Id de Sinistre: ");
+        Integer id = ValidationInputs.getIntegerInput();
+
+        System.out.println(this.sinistreController.find(id));
     }
 }
