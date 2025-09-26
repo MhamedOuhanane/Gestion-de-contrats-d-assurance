@@ -6,9 +6,7 @@ import app.repository.interfaces.SinistreRepository;
 import app.service.interfaces.ContratService;
 import app.service.interfaces.SinistreService;
 
-import java.sql.SQLException;
 import java.time.LocalDateTime;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
