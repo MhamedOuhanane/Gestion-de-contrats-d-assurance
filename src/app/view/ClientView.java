@@ -31,8 +31,10 @@ public class ClientView {
                 case 2:
                     break;
                 case 3:
+                    this.findByIdView();
                     break;
                 case 4:
+                    this.findByNomView();
                     break;
                 case 5:
                     break;
@@ -59,6 +61,22 @@ public class ClientView {
 
 
         System.out.println(this.clientController.create(client));
+    }
+
+    public void findByIdView() {
+        System.out.println("\n+--+--+ Rechercher un Client par son ID +--+--+");
+        System.out.print("🔹Saisir Id de Client: ");
+        Integer id = ValidationInputs.getIntegerInput();
+
+        System.out.println(this.clientController.findById(id));
+    }
+
+    public void findByNomView() {
+        System.out.println("\n+--+--+ Rechercher un Client par son Nom +--+--+");
+        System.out.print("🔹Saisir le nom de Client: ");
+        String nom = ValidationInputs.getInfoStringInput("nom");
+
+        System.out.println(this.clientController.findByNom(nom));
     }
 }
 

@@ -1,7 +1,6 @@
 package app.controller;
 
 import app.model.Client;
-import app.model.Conseiller;
 import app.service.interfaces.ClientService;
 
 public class ClientController {
@@ -19,4 +18,35 @@ public class ClientController {
             return "❌ Erreur: " + e.getMessage();
         }
     }
+
+    public String findById(Integer id) {
+        try {
+            Client client = this.clientService.findClientById(id);
+            if (client != null) {
+                return "👤 Client trouvé: "
+                        + client.getNom() + " " + client.getPrenom()
+                        + " | Email: " + client.getEmail();
+            } else {
+                return "⚠️ Aucun client trouvé avec ID " + id;
+            }
+        } catch (RuntimeException e) {
+            return "❌ Erreur: " + e.getMessage();
+        }
+    }
+
+    public String findByNom(String nom) {
+        try {
+            Client client = this.clientService.findClientByNom(nom);
+            if (client != null) {
+                return "👤 Client trouvé: "
+                        + client.getNom() + " " + client.getPrenom()
+                        + " | Email: " + client.getEmail();
+            } else {
+                return "⚠️ Aucun client trouvé avec le nom " + nom;
+            }
+        } catch (RuntimeException e) {
+            return "❌ Erreur: " + e.getMessage();
+        }
+    }
+
 }
