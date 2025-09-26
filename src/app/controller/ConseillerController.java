@@ -1,8 +1,10 @@
 package app.controller;
 
+import app.model.Client;
 import app.model.Conseiller;
 import app.service.interfaces.ConseillerService;
 
+import java.util.List;
 import java.util.Map;
 
 public class ConseillerController {
@@ -43,6 +45,23 @@ public class ConseillerController {
                 return "🗑️ Conseiller avec ID " + id + " supprimé avec succès.";
             } else {
                 return "⚠️ Aucun conseiller trouvé avec ID " + id;
+            }
+        } catch (RuntimeException e) {
+            return "❌ Erreur: " + e.getMessage();
+        }
+    }
+
+    public String  getClients(Integer id) {
+        try {
+            List<Client> clients = this.conseillerService.getClientsConseiller(id);
+            if (clients.isEmpty()) {
+                return " ➤ Ce conseiller n'a aucun client.";
+            } else {
+                StringBuilder affichage = new StringBuilder("📜 Liste des client de ce conseiller est: ");
+                for (Client client : clients) {
+                    affichage.append("\n 👤 ").append(client.getNom()).append(" ").append(client.getPrenom()).append(" | Email: ").append(client.getEmail());
+                }
+                return affichage.toString();
             }
         } catch (RuntimeException e) {
             return "❌ Erreur: " + e.getMessage();

@@ -34,6 +34,7 @@ public class ConseillerView {
                     this.findView();
                     break;
                 case 4:
+                    this.getClients();
                     break;
                 case 5:
                     connection = false;
@@ -71,5 +72,13 @@ public class ConseillerView {
         Integer id = ValidationInputs.getIntegerInput();
 
         System.out.println(this.conseillerController.find(id));
+    }
+
+    public void getClients() {
+        System.out.println("\n+--+--+ Afficher les clients d'un conseiller +--+--+");
+        System.out.print("🔹Saisir Id de Conseiller: ");
+        Integer id = ValidationInputs.getIntegerInput();
+
+        System.out.println(this.conseillerController.getClients(id));
     }
 }
