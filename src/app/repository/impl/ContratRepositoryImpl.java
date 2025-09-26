@@ -18,7 +18,7 @@ public class ContratRepositoryImpl implements ContratRepository {
         String insertQuery = "INSERT INTO contrat (typeContrat, dateDebut, dateFin, client_id) VALUES (?, ?, ?, ?)";
 
         try (PreparedStatement stmt = conn.prepareStatement(insertQuery, Statement.RETURN_GENERATED_KEYS)){
-            stmt.setString(1, contrat.getTypeContrat().getDescription());
+            stmt.setString(1, contrat.getTypeContrat().toString());
             stmt.setDate(2, Date.valueOf(contrat.getDateDebut()));
             stmt.setDate(3, Date.valueOf(contrat.getDateFin()));
             stmt.setInt(4, contrat.getClient_id());

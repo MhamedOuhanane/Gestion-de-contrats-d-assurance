@@ -25,7 +25,7 @@ public class ContratServiceImpl implements ContratService {
         if (contrat == null) throw new IllegalArgumentException("Le contrat ne peut pas être null");
         try {
             return this.contratRepository.insertContrat(contrat)
-                    .orElseThrow(() -> new RuntimeException("Impossible d'ajouter le contrat d'id: " + contrat.getId()));
+                    .orElseThrow(() -> new RuntimeException("Impossible d'ajouter le contrat."));
         } catch (RuntimeException e) {
             throw new RuntimeException("Erreur dans le service Contrat: " + e.getMessage(), e);
         }

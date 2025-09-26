@@ -17,7 +17,7 @@ public class SinistreRepositoryImpl implements SinistreRepository {
         String insertQuery = "INSERT INTO sinistre (typeSinistre, date, montant, description, contrat_id) VALUES (?, ?, ?, ?, ?)";
 
         try (PreparedStatement stmt = conn.prepareStatement(insertQuery, Statement.RETURN_GENERATED_KEYS)){
-            stmt.setString(1, sinistre.getTypeSinistre().getDescription());
+            stmt.setString(1, sinistre.getTypeSinistre().toString());
             stmt.setTimestamp(2, Timestamp.valueOf(sinistre.getDate()));
             stmt.setDouble(3, sinistre.getMontant());
             stmt.setString(4, sinistre.getDescription());
