@@ -1,6 +1,7 @@
 package app.model;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class Sinistre {
     private Integer id;
@@ -73,5 +74,13 @@ public class Sinistre {
 
     public Integer getContrat_id() {
         return contrat_id;
+    }
+
+    @Override
+    public String toString() {
+        return "Sinistre numero: " + this.id + " | Type de Contrat: " + this.typeSinistre.getDescription()
+                + " | Debut: " +  this.date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"))
+                + " | Montant: " + this.montant
+                + " | Description: " + this.description ;
     }
 }

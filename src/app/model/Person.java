@@ -50,4 +50,9 @@ public abstract class Person {
     public String getPrenom() {
         return prenom;
     }
+
+    @Override
+    public String toString() {
+        return this.nom + " " + this.prenom + " | Email: " + this.email;
+    }
 }
