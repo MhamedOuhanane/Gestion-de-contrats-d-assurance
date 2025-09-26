@@ -120,12 +120,13 @@ public class ClientServiceImpl implements ClientService {
 
     @Override
     public Double getCoutTotalSinistre(Integer client_id) {
-        List<Sinistre> sinistres = this.getSinistresClient(client_id);
-        Double somme = 0.0;
-        for (Sinistre sinistre : sinistres) {
-            somme += sinistre.getMontant();
+        try {
+            return this.getSinistresClient(client_id).stream()
+                    .mapToDouble(Sinistre::getMontant)
+                    .sum();
+        } catch (RuntimeException e) {
+            throw new RuntimeException("Erreur dans le service Client: " + e.getMessage(), e);
         }
-        return somme;
     }
 
 }

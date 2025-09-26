@@ -22,7 +22,7 @@ public class ContratView {
             System.out.println("1. Ajouter un Contrat");
             System.out.println("2. Supprimer un Contrat");
             System.out.println("3. Rechercher un Contrat par son ID");
-            System.out.println("4. Rechercher les Sinistres d'un Contrat");
+            System.out.println("4. Afficher les Sinistres d'un Contrat");
             System.out.println("5. Quitter");
             System.out.print("Choix : ");
 
