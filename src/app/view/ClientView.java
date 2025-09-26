@@ -20,7 +20,7 @@ public class ClientView {
             System.out.println("3. Rechercher un Client par son ID");
             System.out.println("4. Rechercher un Client par son nom de famille");
             System.out.println("5. Afficher les Contrats d'un Client");
-            System.out.println("6. Afficher les Contrats d'un Client");
+            System.out.println("6. Afficher les Sinistres d'un Client");
             System.out.println("7. Quitter");
             System.out.print("Choix : ");
 
@@ -42,6 +42,7 @@ public class ClientView {
                     this.getContrats();
                     break;
                 case 6:
+                    this.getSinistres();
                     break;
                 case 7:
                     connection = false;
@@ -98,6 +99,14 @@ public class ClientView {
         Integer id = ValidationInputs.getIntegerInput();
 
         System.out.println(this.clientController.getContrats(id));
+    }
+
+    private void getSinistres() {
+        System.out.println("\n+--+--+ Afficher les Sinistres d'un Client +--+--+");
+        System.out.print("🔹Saisir Id de Client: ");
+        Integer id = ValidationInputs.getIntegerInput();
+
+        System.out.println(this.clientController.getSinistres(id));
     }
 }
 

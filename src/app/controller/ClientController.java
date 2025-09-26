@@ -2,6 +2,7 @@ package app.controller;
 
 import app.model.Client;
 import app.model.Contrat;
+import app.model.Sinistre;
 import app.service.interfaces.ClientService;
 
 import java.util.List;
@@ -68,13 +69,29 @@ public class ClientController {
     public String getContrats(Integer id) {
         try {
             List<Contrat> contrats = this.clientService.getContratsClient(id);
-            if (contrats.isEmpty()) return " ➤ Ce conseiller n'a aucun client.";
+            if (contrats.isEmpty()) return " ➤ Ce Client n'a aucun Contrat.";
             else {
                 StringBuilder listContrat = new StringBuilder("📋 La liste des Contrat de ce Client est: ");
                 for (Contrat contrat : contrats) {
                     listContrat.append("\n 📜 ").append(contrat.toString());
                 }
                 return listContrat.toString();
+            }
+        } catch (RuntimeException e) {
+            return "❌ Erreur: " + e.getMessage();
+        }
+    }
+
+    public String getSinistres(Integer id) {
+        try {
+            List<Sinistre> sinistres = this.clientService.getSinistresClient(id);
+            if (sinistres.isEmpty()) return " ➤ Ce Clients n'a aucun Sinistre.";
+            else {
+                StringBuilder listSinistre = new StringBuilder("📋 La liste des Sinistres de ce Client est: ");
+                for (Sinistre sinistre : sinistres) {
+                    listSinistre.append("\n 💥 ").append(sinistre.toString());
+                }
+                return listSinistre.toString();
             }
         } catch (RuntimeException e) {
             return "❌ Erreur: " + e.getMessage();
