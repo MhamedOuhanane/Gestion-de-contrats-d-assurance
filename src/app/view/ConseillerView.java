@@ -1,14 +1,11 @@
 package app.view;
 
 import app.controller.ConseillerController;
+import app.model.Conseiller;
 import app.utils.ValidationInputs;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
-
 public class ConseillerView {
-    private ConseillerController conseillerController;
+    private final ConseillerController conseillerController;
 
     public ConseillerView(ConseillerController conseillerController) {
         this.conseillerController = conseillerController;
@@ -31,8 +28,10 @@ public class ConseillerView {
                     this.createView();
                     break;
                 case 2:
+                    this.deleteVeiw();
                     break;
                 case 3:
+                    this.findView();
                     break;
                 case 4:
                     break;
@@ -53,11 +52,24 @@ public class ConseillerView {
         String prenom = ValidationInputs.getInfoStringInput("prenom");
         System.out.print("🔹Saisir l'email de Conseiller: ");
         String email = ValidationInputs.getInfoStringInput("email");
-        Map<String, Object> conseillerInfo = new HashMap<>();
-        conseillerInfo.put("nom", nom);
-        conseillerInfo.put("prenom", prenom);
-        conseillerInfo.put("email", email);
+        Conseiller conseiller = new Conseiller(nom, prenom, email);
 
-        System.out.println(this.conseillerController.create(conseillerInfo));
+        System.out.println(this.conseillerController.create(conseiller));
+    }
+
+    public void deleteVeiw() {
+        System.out.println("\n+--+--+ Supprimer un Conseiller +--+--+");
+        System.out.print("🔹Saisir Id de Conseiller: ");
+        Integer id = ValidationInputs.getIntegerInput();
+
+        System.out.println(this.conseillerController.delete(id));
+    }
+
+    public void findView() {
+        System.out.println("\n+--+--+ Rechercher un Conseiller +--+--+");
+        System.out.print("🔹Saisir Id de Conseiller: ");
+        Integer id = ValidationInputs.getIntegerInput();
+
+        System.out.println(this.conseillerController.find(id));
     }
 }
