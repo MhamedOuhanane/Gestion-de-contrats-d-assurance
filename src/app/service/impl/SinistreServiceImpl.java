@@ -55,7 +55,7 @@ public class SinistreServiceImpl implements SinistreService {
     }
 
     @Override
-    public List<Sinistre> getSinistresTriMontantCr() {
+    public List<Sinistre> getSinistresTriMontantDec() {
         try {
             return this.sinistreRepository.getAllSinistre().stream()
                     .sorted((sin1, sin2) -> (int) (sin2.getMontant() - sin1.getMontant()))
