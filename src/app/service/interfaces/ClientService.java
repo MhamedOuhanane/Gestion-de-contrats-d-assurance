@@ -14,5 +14,6 @@ public interface ClientService {
     Boolean deleteClient(Integer client_id);
     List<Contrat> getContratsClient(Integer client_id);
     List<Sinistre> getSinistresClient(Integer client_id);
+    Double getCoutTotalSinistre(Integer client_id);
 
 }

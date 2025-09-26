@@ -15,13 +15,11 @@ import java.util.stream.Collectors;
 public class ClientServiceImpl implements ClientService {
     private final ClientRepository clientRepository;
     private final ContratRepository contratRepository;
-    private final SinistreRepository sinistreRepository;
     private final ContratService contratService;
 
-    public ClientServiceImpl(ClientRepository clientRepository, ContratRepository contratRepository, SinistreRepository sinistreRepository, ContratService contratService) {
+    public ClientServiceImpl(ClientRepository clientRepository, ContratRepository contratRepository, ContratService contratService) {
         this.clientRepository = clientRepository;
         this.contratRepository = contratRepository;
-        this.sinistreRepository = sinistreRepository;
         this.contratService = contratService;
     }
 
@@ -83,10 +81,8 @@ public class ClientServiceImpl implements ClientService {
 
     @Override
     public Boolean deleteClient(Integer client_id) {
-        if (client_id == null) throw new IllegalArgumentException("L'id de client ne peut pas être null");
         try {
-            Client client = this.clientRepository.findClient(client_id)
-                    .orElseThrow(() -> new RuntimeException("Aucun client trouvé avec l'id: " + client_id));
+            Client client = this.findClientById(client_id);
             return this.clientRepository.deleteClient(client);
         } catch (RuntimeException e) {
             throw new RuntimeException("Erreur dans le service Client: " + e.getMessage(), e);
@@ -98,8 +94,7 @@ public class ClientServiceImpl implements ClientService {
         if (client_id == null) throw new IllegalArgumentException("L'id de client ne peut pas être null");
 
         try {
-            Client client = this.clientRepository.findClient(client_id)
-                    .orElseThrow(() -> new RuntimeException("Aucun client trouvé avec l'id: " + client_id));
+            Client client = this.findClientById(client_id);
 
             return this.contratRepository.getAllContrat().stream()
                     .filter(c -> Objects.equals(c.getClient_id(), client.getId()))
@@ -121,6 +116,16 @@ public class ClientServiceImpl implements ClientService {
         } catch (RuntimeException e) {
             throw new RuntimeException("Erreur lors de récupération des sinistres du client " + client_id, e);
         }
+    }
+
+    @Override
+    public Double getCoutTotalSinistre(Integer client_id) {
+        List<Sinistre> sinistres = this.getSinistresClient(client_id);
+        Double somme = 0.0;
+        for (Sinistre sinistre : sinistres) {
+            somme += sinistre.getMontant();
+        }
+        return somme;
     }
 
 }
