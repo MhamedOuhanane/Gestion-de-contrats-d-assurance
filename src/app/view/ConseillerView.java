@@ -58,7 +58,7 @@ public class ConseillerView {
         System.out.println(this.conseillerController.create(conseiller));
     }
 
-    public void deleteVeiw() {
+    private void deleteVeiw() {
         System.out.println("\n+--+--+ Supprimer un Conseiller +--+--+");
         System.out.print("🔹Saisir Id de Conseiller: ");
         Integer id = ValidationInputs.getIntegerInput();
@@ -66,7 +66,7 @@ public class ConseillerView {
         System.out.println(this.conseillerController.delete(id));
     }
 
-    public void findView() {
+    private void findView() {
         System.out.println("\n+--+--+ Rechercher un Conseiller +--+--+");
         System.out.print("🔹Saisir Id de Conseiller: ");
         Integer id = ValidationInputs.getIntegerInput();
@@ -74,7 +74,7 @@ public class ConseillerView {
         System.out.println(this.conseillerController.find(id));
     }
 
-    public void getClients() {
+    private void getClients() {
         System.out.println("\n+--+--+ Afficher les clients d'un conseiller +--+--+");
         System.out.print("🔹Saisir Id de Conseiller: ");
         Integer id = ValidationInputs.getIntegerInput();

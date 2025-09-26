@@ -1,7 +1,10 @@
 package app.controller;
 
 import app.model.Client;
+import app.model.Contrat;
 import app.service.interfaces.ClientService;
+
+import java.util.List;
 
 public class ClientController {
     private final ClientService clientService;
@@ -56,6 +59,22 @@ public class ClientController {
                 return "🗑️ Client avec ID " + id + " supprimé avec succès.";
             } else {
                 return "⚠️ Aucun client trouvé avec ID " + id;
+            }
+        } catch (RuntimeException e) {
+            return "❌ Erreur: " + e.getMessage();
+        }
+    }
+
+    public String getContrats(Integer id) {
+        try {
+            List<Contrat> contrats = this.clientService.getContratsClient(id);
+            if (contrats.isEmpty()) return " ➤ Ce conseiller n'a aucun client.";
+            else {
+                StringBuilder listContrat = new StringBuilder("📋 La liste des Contrat de ce Client est: ");
+                for (Contrat contrat : contrats) {
+                    listContrat.append("\n 📜 ").append(contrat.toString());
+                }
+                return listContrat.toString();
             }
         } catch (RuntimeException e) {
             return "❌ Erreur: " + e.getMessage();

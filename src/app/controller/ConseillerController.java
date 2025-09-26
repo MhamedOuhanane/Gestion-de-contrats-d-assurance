@@ -56,9 +56,9 @@ public class ConseillerController {
             if (clients.isEmpty()) {
                 return " ➤ Ce conseiller n'a aucun client.";
             } else {
-                StringBuilder affichage = new StringBuilder("📜 Liste des client de ce conseiller est: ");
+                StringBuilder affichage = new StringBuilder("📋 Liste des client de ce conseiller est: ");
                 for (Client client : clients) {
-                    affichage.append("\n 👤 ").append(client.getNom()).append(" ").append(client.getPrenom()).append(" | Email: ").append(client.getEmail());
+                    affichage.append("\n 👤 ").append(client.toString());
                 }
                 return affichage.toString();
             }
