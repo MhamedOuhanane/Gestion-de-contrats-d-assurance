@@ -1,6 +1,7 @@
 package app.utils;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.InputMismatchException;
@@ -93,6 +94,22 @@ public class ValidationInputs {
             } catch (DateTimeParseException e) {
                 System.out.println("⚠️ Format invalide, utilisez yyyy-MM-dd.");
                 date = null;
+            }
+            if (date == null) System.out.print("Ré-entrez votre choix: ");
+        }
+        return date;
+    }
+
+    public static LocalDateTime getDateTimeInput() {
+        LocalDateTime date = null;
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+
+        while (date == null) {
+            String input = scanner.nextLine();
+            try {
+                date = LocalDateTime.parse(input, formatter);
+            } catch (DateTimeParseException e) {
+                System.out.println("⚠️ Format invalide, utilisez 'yyyy-MM-dd HH:mm'.");
             }
             if (date == null) System.out.print("Ré-entrez votre choix: ");
         }

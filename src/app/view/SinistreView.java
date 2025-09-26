@@ -4,6 +4,8 @@ import app.controller.SinistreController;
 import app.model.EnumSinistre;
 import app.model.Sinistre;
 import app.utils.ValidationInputs;
+
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class SinistreView {
@@ -38,8 +40,15 @@ public class SinistreView {
                     this.findView();
                     break;
                 case 4:
+                    this.triSinistreMontant();
                     break;
                 case 5:
+                    this.filtreSinistresDateAv();
+                    break;
+                case 6:
+                    this.filtreSinistresMontant();
+                    break;
+                case 7:
                     connection = false;
                     break;
                 default:
@@ -100,5 +109,26 @@ public class SinistreView {
         Integer id = ValidationInputs.getIntegerInput();
 
         System.out.println(this.sinistreController.find(id));
+    }
+
+    private void triSinistreMontant() {
+        System.out.println("\n+--+--+ Triés les Sinistres par Montant Decroissant +--+--+");
+
+        System.out.println(this.sinistreController.getTriSinistres());
+    }
+
+    private void filtreSinistresMontant() {
+        System.out.println("\n+--+--+ Filtre les Sinistres Superieur Montant +--+--+");
+        System.out.print("🔹Saisir min Montant: ");
+        Double montant = ValidationInputs.getMontantInput();
+        System.out.println(this.sinistreController.filtreSinistreCautSup(montant));
+    }
+
+    private void filtreSinistresDateAv() {
+        System.out.println("\n+--+--+ Filtre les Sinistres par Date +--+--+");
+        System.out.print("🔹Saisir la date du fin de Contrat (format 'yyyy-MM-dd HH:mm'): ");
+        LocalDateTime date = ValidationInputs.getDateTimeInput();
+
+        System.out.println(this.sinistreController.filterSinistreDateAv(date));
     }
 }

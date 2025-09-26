@@ -59,7 +59,7 @@ public class SinistreController {
                     .map(sinistre -> " 💥 " + sinistre.toString())
                     .collect(Collectors.joining(
                             "\n",
-                            "📋 La liste des Sinistres triés par montant decroissant: ",
+                            "📋 La liste des Sinistres triés par montant decroissant: \n",
                             ""
                     ));
         } catch (RuntimeException e) {
@@ -76,7 +76,7 @@ public class SinistreController {
                     .map(sinistre -> " 💥 " + sinistre.toString())
                     .collect(Collectors.joining(
                             "\n",
-                            "📋 La liste des Sinistres qui se sont produits avant '" + date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")) + "' : ",
+                            "📋 La liste des Sinistres qui se sont produits avant '" + date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")) + "' : \n",
                             ""
                     ));
         } catch (RuntimeException e) {
@@ -93,7 +93,7 @@ public class SinistreController {
                     .map(sinistre -> " 💥 " + sinistre.toString())
                     .collect(Collectors.joining(
                             "\n",
-                            "📋 La liste des Sinistres dont le cout est superieur a '" + montent + " MAD' : ",
+                            "📋 La liste des Sinistres dont le cout est superieur a '" + montent + " MAD' : \n",
                             ""
                     ));
         } catch (RuntimeException e) {
