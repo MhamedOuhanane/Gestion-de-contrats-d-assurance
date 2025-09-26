@@ -1,5 +1,8 @@
 package app.utils;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.InputMismatchException;
 import java.util.Objects;
 import java.util.Scanner;
@@ -13,7 +16,8 @@ public class ValidationInputs {
         while (input == null) {
             try {
                 input = scanner.nextDouble();
-                if (input < 0) throw new InputMismatchException("Le montant ne peut pas être saisi sous forme de valeur négative.");
+                if (input < 0)
+                    throw new InputMismatchException("Le montant ne peut pas être saisi sous forme de valeur négative.");
             } catch (InputMismatchException exc) {
                 System.out.println("🚫 Erreur : veuillez entrer un nombre entier positif.");
                 scanner.nextLine();
@@ -52,11 +56,32 @@ public class ValidationInputs {
                 boolean pattern = Pattern.matches(Objects.equals(type, "email") ? regexEmail : regexName, input);
                 if (!pattern) throw new InputMismatchException("⚠️ Le " + type + " saisi est invalide. ");
             } catch (InputMismatchException exc) {
-                System.out.println("🚫 Le " + type + " saisi est invalide." );
+                System.out.println("🚫 Le " + type + " saisi est invalide.");
                 input = null;
             }
             if (input == null) System.out.print("Ré-entrez votre choix: ");
         }
         return input;
+    }
+
+    public static LocalDate getDateInput() {
+        LocalDate date = null;
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+        while (date == null) {
+            String input = scanner.nextLine();
+            try {
+                date = LocalDate.parse(input, formatter);
+                if (!date.isAfter(LocalDate.now())) {
+                    System.out.println("🚫 La date doit être postérieure à aujourd'hui.");
+                    date = null;
+                }
+            } catch (DateTimeParseException e) {
+                System.out.println("⚠️ Format invalide, utilisez yyyy-MM-dd.");
+                date = null;
+            }
+            if (date == null) System.out.print("Ré-entrez votre choix: ");
+        }
+        return date;
     }
 }

@@ -40,7 +40,7 @@ public class ContratController {
         try {
             Contrat contrat = this.contratService.findContrat(id);
             if (contrat != null) {
-                return contrat.toString();
+                return "📜 Conseiller trouvé: " + contrat.toString();
             } else {
                 return "⚠️ Aucun contrat trouvé avec ID " + id;
             }

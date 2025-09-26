@@ -18,7 +18,7 @@ CREATE TABLE IF NOT EXISTS client(
     prenom VARCHAR(100) NOT NULL,
     email VARCHAR(100) UNIQUE NOT NULL,
     conseiller_id INT NOT NULL,
-    FOREIGN KEY (conseiller_id) REFERENCES conseiller(id)
+    FOREIGN KEY (conseiller_id) REFERENCES conseiller(id) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS contrat(
@@ -27,7 +27,7 @@ CREATE TABLE IF NOT EXISTS contrat(
     dateDebut DATE NOT NULL,
     dateFin DATE NOT NULL,
     client_id INT NOT NULL,
-    FOREIGN KEY (client_id) REFERENCES client(id)
+    FOREIGN KEY (client_id) REFERENCES client(id) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS sinistre (
@@ -37,5 +37,5 @@ CREATE TABLE IF NOT EXISTS sinistre (
     montant DECIMAL(10,2) NOT NULL,
     description TEXT NOT NULL,
     contrat_id INT NOT NULL,
-    FOREIGN KEY (contrat_id) REFERENCES contrat(id)
+    FOREIGN KEY (contrat_id) REFERENCES contrat(id) ON DELETE CASCADE
 );

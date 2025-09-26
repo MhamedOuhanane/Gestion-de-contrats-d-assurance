@@ -32,7 +32,7 @@ public class Main {
 
 //        Service
         ConseillerService conseillerService = new ConseillerServiceImpl(conseillerRepository, clientRepository);
-        ContratService contratService = new ContratServiceImpl(contratRepository, sinistreRepository);
+        ContratService contratService = new ContratServiceImpl(contratRepository, sinistreRepository, clientRepository);
         ClientService clientService = new ClientServiceImpl(clientRepository, contratRepository, contratService);
         SinistreService sinistreService = new SinistreServiceImpl(sinistreRepository, contratService);
 
@@ -45,7 +45,7 @@ public class Main {
 //        View
         ConseillerView conseillerView = new ConseillerView(conseillerController);
         ClientView clientView = new ClientView(clientController);
-        ContratView contratView = new ContratView();
+        ContratView contratView = new ContratView(contratController);
         SinistreView sinistreView = new SinistreView();
 
         boolean connection = true;
@@ -68,6 +68,7 @@ public class Main {
                     clientView.menuClient();
                     break;
                 case 3:
+                    contratView.menuContrat();
                     break;
                 case 4:
                     break;
