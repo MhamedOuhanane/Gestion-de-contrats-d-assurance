@@ -38,7 +38,7 @@ public class Main {
 
 //        Controller
         ConseillerController conseillerController = new ConseillerController(conseillerService);
-        ClientController clientController = new ClientController();
+        ClientController clientController = new ClientController(clientService);
         ContratController contratController = new ContratController();
         SinistreController sinistreController = new SinistreController();
 
@@ -65,6 +65,7 @@ public class Main {
                     conseillerView.menuConseiller();
                     break;
                 case 2:
+                    clientView.menuClient();
                     break;
                 case 3:
                     break;

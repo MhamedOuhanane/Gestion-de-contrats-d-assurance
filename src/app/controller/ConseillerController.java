@@ -5,7 +5,6 @@ import app.model.Conseiller;
 import app.service.interfaces.ConseillerService;
 
 import java.util.List;
-import java.util.Map;
 
 public class ConseillerController {
     private final ConseillerService conseillerService;
@@ -16,8 +15,8 @@ public class ConseillerController {
 
     public String create(Conseiller conseiller) {
         try {
-            Conseiller newConsseiller = this.conseillerService.ajouterConseiller(conseiller);
-            return "✅ Le conseiller est ajouter avec success avec l'id: " + newConsseiller.getId();
+            conseiller = this.conseillerService.ajouterConseiller(conseiller);
+            return "✅ Le conseiller est ajouter avec success avec l'id: " + conseiller.getId();
         } catch (RuntimeException e) {
             return "❌ Erreur: " + e.getMessage();
         }
