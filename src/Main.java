@@ -39,7 +39,7 @@ public class Main {
 //        Controller
         ConseillerController conseillerController = new ConseillerController(conseillerService);
         ClientController clientController = new ClientController(clientService);
-        ContratController contratController = new ContratController();
+        ContratController contratController = new ContratController(contratService);
         SinistreController sinistreController = new SinistreController();
 
 //        View
