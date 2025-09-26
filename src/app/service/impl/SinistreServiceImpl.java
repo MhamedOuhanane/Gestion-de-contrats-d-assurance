@@ -7,6 +7,10 @@ import app.service.interfaces.ContratService;
 import app.service.interfaces.SinistreService;
 
 import java.sql.SQLException;
+import java.time.LocalDateTime;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class SinistreServiceImpl implements SinistreService {
     private final SinistreRepository sinistreRepository;
@@ -51,4 +55,41 @@ public class SinistreServiceImpl implements SinistreService {
             throw new RuntimeException("Erreur dans le service Sinistre: " + e.getMessage(), e);
         }
     }
+
+    @Override
+    public List<Sinistre> getSinistresTriMontantCr() {
+        try {
+            return this.sinistreRepository.getAllSinistre().stream()
+                    .sorted((sin1, sin2) -> (int) (sin2.getMontant() - sin1.getMontant()))
+                    .collect(Collectors.toList());
+        } catch (RuntimeException e) {
+            throw new RuntimeException("Erreur dans le service Sinistre: " + e.getMessage(), e);
+        }
+    }
+
+    @Override
+    public List<Sinistre> filtreSinistreDateAv(LocalDateTime date) {
+        if (date == null) throw new IllegalArgumentException("La date ne peut pas être null");
+        try {
+            return this.sinistreRepository.getAllSinistre().stream()
+                    .filter(sinistre -> sinistre.getDate().isBefore(date))
+                    .collect(Collectors.toList());
+        } catch (RuntimeException e) {
+            throw new RuntimeException("Erreur dans le service Sinistre: " + e.getMessage(), e);
+        }
+    }
+
+    @Override
+    public List<Sinistre> filtreSinistreCautSup(Double montant) {
+        if (montant == null) throw new IllegalArgumentException("Le montant ne peut pas être null");
+        try {
+            return this.sinistreRepository.getAllSinistre().stream()
+                    .filter(sinistre -> sinistre.getMontant() > montant)
+                    .collect(Collectors.toList());
+        } catch (RuntimeException e) {
+            throw new RuntimeException("Erreur dans le service Sinistre: " + e.getMessage(), e);
+        }
+    }
+
+
 }
